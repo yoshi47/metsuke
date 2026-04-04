@@ -20,7 +20,7 @@
     ],
     "SubagentStop": [
       {
-        "matcher": "",
+        "matcher": "*",
         "hooks": [{
           "type": "command",
           "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/workflow-tracker.sh\""

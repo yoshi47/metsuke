@@ -7,7 +7,7 @@ source "${SCRIPT_DIR}/lib.sh"
 INPUT=$(cat)
 
 # Early exit: only care about git commit
-if ! echo "$INPUT" | grep -q 'git.*commit'; then
+if ! echo "$INPUT" | grep -q '"commit"'; then
   exit 0
 fi
 
