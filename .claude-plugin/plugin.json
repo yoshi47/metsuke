@@ -1,0 +1,16 @@
+{
+  "name": "metsuke",
+  "version": "0.1.0",
+  "description": "Workflow compliance enforcer — ensures plan reviews and PR reviews are completed before proceeding",
+  "author": {
+    "name": "yoshi47",
+    "url": "https://github.com/yoshi47"
+  },
+  "homepage": "https://github.com/yoshi47/metsuke",
+  "repository": "https://github.com/yoshi47/metsuke",
+  "license": "MIT",
+  "commands": [
+    "./commands/status.md",
+    "./commands/skip-review.md"
+  ]
+}
