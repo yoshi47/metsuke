@@ -1,0 +1,29 @@
+hooks/hooks.json
+  5bcbb49673547e3b 23
+scripts/lib.sh
+  5bcbb49673547e3b 11
+scripts/workflow-guard.sh
+  5bcbb49673547e3b 10
+commands/skip-review.md
+  5bcbb49673547e3b 3,10-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "6f11e214d652a188514bf361284b7f98351f6b37",
+  "prompts": {
+    "5bcbb49673547e3b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1e85d01-5c50-425b-a09a-ccb0f1b8e2bd",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 8,
+      "total_deletions": 12,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    }
+  }
+}
