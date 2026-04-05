@@ -1,0 +1,23 @@
+README.md
+  5bcbb49673547e3b 1-88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "f55777fa6ef255c018c6123bf6626635d4628ae8",
+  "prompts": {
+    "5bcbb49673547e3b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1e85d01-5c50-425b-a09a-ccb0f1b8e2bd",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 88,
+      "total_deletions": 0,
+      "accepted_lines": 88,
+      "overriden_lines": 0
+    }
+  }
+}
