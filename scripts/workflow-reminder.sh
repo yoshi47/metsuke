@@ -17,8 +17,12 @@ fi
 
 # Plan mode reminder
 if [[ "$PERMISSION_MODE" == "plan" ]]; then
-  if ! metsuke_check "$SESSION_ID" "plan-review-done"; then
-    echo "[metsuke] プラン作成後は plan-document-reviewer でレビューしてからユーザーに提示してください。"
+  if metsuke_config_enabled '.plan_review.enabled'; then
+    if ! metsuke_check "$SESSION_ID" "plan-review-done"; then
+      REMINDER=$(metsuke_config_get '.plan_review.reminder_message' \
+        "[metsuke] プラン作成後は plan-document-reviewer でレビューしてからユーザーに提示してください。")
+      echo "$REMINDER"
+    fi
   fi
 fi
 

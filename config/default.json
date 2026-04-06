@@ -1,0 +1,17 @@
+{
+  "impl_review": {
+    "enabled": true,
+    "block_commit": true,
+    "block_message": "[metsuke] git commit blocked: レビュー未実施\npr-review-toolkit:review-pr を実行してください。\n省略するには /metsuke:skip-review を実行してください。",
+    "detection_patterns": [
+      "pr-review-toolkit"
+    ]
+  },
+  "plan_review": {
+    "enabled": true,
+    "reminder_message": "[metsuke] プラン作成後は plan-document-reviewer でレビューしてからユーザーに提示してください。",
+    "detection_patterns": [
+      "plan-document-reviewer"
+    ]
+  }
+}

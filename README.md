@@ -61,10 +61,33 @@ Or add to your `settings.json`:
 }
 ```
 
+## Configuration
+
+Run `/metsuke:init` to create the config file at `~/.config/metsuke/config.json`:
+
+```json
+{
+  "impl_review": {
+    "enabled": true,
+    "block_commit": true,
+    "block_message": "[metsuke] git commit blocked: レビュー未実施\n...",
+    "detection_patterns": ["pr-review-toolkit"]
+  },
+  "plan_review": {
+    "enabled": true,
+    "reminder_message": "[metsuke] プラン作成後は plan-document-reviewer で...",
+    "detection_patterns": ["plan-document-reviewer"]
+  }
+}
+```
+
+All settings are optional — without a config file, sensible defaults are used.
+
 ## Commands
 
 | Command | Description |
 |---------|-------------|
+| `/metsuke:init` | Create or reset configuration |
 | `/metsuke:status` | Show current workflow compliance status |
 | `/metsuke:skip-review` | Bypass review enforcement for this session |
 

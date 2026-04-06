@@ -18,17 +18,31 @@ SUBAGENT_TYPE=$(echo "$INPUT" | jq -r '.subagent_type // ""')
 
 metsuke_log "SubagentStop: agent_type=${AGENT_TYPE} agent_id=${AGENT_ID} subagent_type=${SUBAGENT_TYPE}"
 
-# Check all possible fields for pr-review-toolkit pattern
 ALL_FIELDS="${AGENT_TYPE} ${AGENT_ID} ${SUBAGENT_TYPE}"
 
-if echo "$ALL_FIELDS" | grep -qi 'pr-review-toolkit'; then
-  metsuke_log "SubagentStop: PR review detected, marking done"
-  metsuke_mark "$SESSION_ID" "pr-review-done"
+# PR review detection
+if metsuke_config_enabled '.impl_review.enabled'; then
+  # Read patterns from config, fall back to default
+  PATTERNS=$(metsuke_config_get '.impl_review.detection_patterns // [] | .[]' 'pr-review-toolkit')
+  for pattern in $PATTERNS; do
+    if echo "$ALL_FIELDS" | grep -qi "$pattern"; then
+      metsuke_log "SubagentStop: PR review detected (pattern: ${pattern}), marking done"
+      metsuke_mark "$SESSION_ID" "pr-review-done"
+      break
+    fi
+  done
 fi
 
-if echo "$ALL_FIELDS" | grep -qi 'plan-document-reviewer'; then
-  metsuke_log "SubagentStop: Plan review detected, marking done"
-  metsuke_mark "$SESSION_ID" "plan-review-done"
+# Plan review detection
+if metsuke_config_enabled '.plan_review.enabled'; then
+  PATTERNS=$(metsuke_config_get '.plan_review.detection_patterns // [] | .[]' 'plan-document-reviewer')
+  for pattern in $PATTERNS; do
+    if echo "$ALL_FIELDS" | grep -qi "$pattern"; then
+      metsuke_log "SubagentStop: Plan review detected (pattern: ${pattern}), marking done"
+      metsuke_mark "$SESSION_ID" "plan-review-done"
+      break
+    fi
+  done
 fi
 
 exit 0

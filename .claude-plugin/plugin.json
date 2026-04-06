@@ -10,6 +10,7 @@
   "repository": "https://github.com/yoshi47/metsuke",
   "license": "MIT",
   "commands": [
+    "./commands/init.md",
     "./commands/status.md",
     "./commands/skip-review.md"
   ]

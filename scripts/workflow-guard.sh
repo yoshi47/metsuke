@@ -11,6 +11,11 @@ if ! echo "$INPUT" | grep -q '"commit"'; then
   exit 0
 fi
 
+# Check if impl_review is enabled
+if ! metsuke_config_enabled '.impl_review.enabled'; then
+  exit 0
+fi
+
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"')
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // ""')
 
@@ -19,6 +24,11 @@ metsuke_log "workflow-guard stdin: $(echo "$INPUT" | jq -c .)"
 
 # Only block actual git commit commands, not grep matches
 if ! echo "$COMMAND" | grep -qE '\bgit\b.*\bcommit\b'; then
+  exit 0
+fi
+
+# Check if commit blocking is enabled
+if [[ "$(metsuke_config_get '.impl_review.block_commit' 'true')" != "true" ]]; then
   exit 0
 fi
 
@@ -36,11 +46,10 @@ fi
 
 # Block
 metsuke_log "workflow-guard: BLOCKED - review not done"
-REASON="[metsuke] git commit blocked: レビュー未実施
-pr-review-toolkit:review-pr を実行してください。
-省略するには /metsuke:skip-review を実行してください。"
+REASON=$(metsuke_config_get '.impl_review.block_message' \
+  "[metsuke] git commit blocked: レビュー未実施\npr-review-toolkit:review-pr を実行してください。\n省略するには /metsuke:skip-review を実行してください。")
 
-ESCAPED_REASON=$(echo "$REASON" | jq -Rs .)
+ESCAPED_REASON=$(printf '%s' "$REASON" | jq -Rs .)
 
 cat <<EOF
 {
