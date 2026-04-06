@@ -6,6 +6,9 @@ source "${SCRIPT_DIR}/lib.sh"
 
 INPUT=$(cat)
 
+# No config = not initialized
+if ! metsuke_config_exists; then exit 0; fi
+
 # Early exit: only care about git commit
 if ! echo "$INPUT" | grep -q '"commit"'; then
   exit 0

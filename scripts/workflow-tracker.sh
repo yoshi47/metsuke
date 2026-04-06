@@ -5,6 +5,10 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${SCRIPT_DIR}/lib.sh"
 
 INPUT=$(cat)
+
+# No config = not initialized
+if ! metsuke_config_exists; then exit 0; fi
+
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"')
 
 # Log full payload for spike investigation

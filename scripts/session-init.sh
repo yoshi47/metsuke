@@ -13,4 +13,8 @@ metsuke_log "SessionStart stdin: $(echo "$INPUT" | jq -c .)"
 metsuke_clear_session "$SESSION_ID"
 metsuke_cleanup
 
-echo "[metsuke] Workflow tracking initialized."
+if [[ ! -f "$METSUKE_CONFIG" ]]; then
+  echo "[metsuke] 設定ファイルがありません。/metsuke:init を実行して設定を作成してください。"
+else
+  echo "[metsuke] Workflow tracking initialized."
+fi

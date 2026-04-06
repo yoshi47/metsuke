@@ -37,3 +37,7 @@ metsuke_config_enabled() {
   local key="$1"
   [[ "$(metsuke_config_get "$key" "true")" == "true" ]]
 }
+
+metsuke_config_exists() {
+  [[ -f "$METSUKE_CONFIG" ]]
+}
