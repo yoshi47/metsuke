@@ -1,0 +1,33 @@
+scripts/workflow-reminder.sh
+  5bcbb49673547e3b 8-11
+scripts/session-init.sh
+  5bcbb49673547e3b 16-20
+README.md
+  5bcbb49673547e3b 22,24,48-51,54-59,69,74,80-96,99-106,112,123,128-129
+scripts/workflow-guard.sh
+  5bcbb49673547e3b 9-11
+scripts/lib.sh
+  5bcbb49673547e3b 40-43
+scripts/workflow-tracker.sh
+  5bcbb49673547e3b 8-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "fe01014ed6b8b28d7ad0f7d1937f73a907fbc488",
+  "prompts": {
+    "5bcbb49673547e3b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1e85d01-5c50-425b-a09a-ccb0f1b8e2bd",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 68,
+      "total_deletions": 27,
+      "accepted_lines": 67,
+      "overriden_lines": 0
+    }
+  }
+}
