@@ -1,0 +1,37 @@
+config/default.json
+  5bcbb49673547e3b 1-17
+scripts/workflow-reminder.sh
+  5bcbb49673547e3b 20-25
+.claude-plugin/plugin.json
+  5bcbb49673547e3b 13
+scripts/lib.sh
+  5bcbb49673547e3b 6-7,20-38
+scripts/workflow-guard.sh
+  5bcbb49673547e3b 14-18,30-34,49-50,52
+README.md
+  5bcbb49673547e3b 64-85,90
+scripts/workflow-tracker.sh
+  5bcbb49673547e3b 23-33,36-45
+commands/init.md
+  5bcbb49673547e3b 1-45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "52052094e37b9eee0554504f6fb84ac2596b5914",
+  "prompts": {
+    "5bcbb49673547e3b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1e85d01-5c50-425b-a09a-ccb0f1b8e2bd",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 149,
+      "total_deletions": 14,
+      "accepted_lines": 149,
+      "overriden_lines": 0
+    }
+  }
+}
