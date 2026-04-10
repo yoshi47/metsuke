@@ -1,4 +1,5 @@
 {
+  "commit_aliases": [],
   "checks": [
     {
       "name": "impl_review",

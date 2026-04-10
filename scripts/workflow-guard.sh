@@ -4,13 +4,47 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${SCRIPT_DIR}/lib.sh"
 
+# Detect git commit in potentially compound commands (&&, ;, ||)
+# Uses awk for splitting (BSD sed doesn't interpret \n in replacements)
+is_git_commit() {
+  local cmd="$1"
+  while IFS= read -r segment; do
+    segment="${segment#"${segment%%[![:space:]]*}"}"
+    [[ -z "$segment" ]] && continue
+    # Match: git [global-flags] commit (but not git commit-graph etc.)
+    if printf '%s\n' "$segment" | grep -qE '^\s*git(\s+(-[Cc]\s+\S+|--[a-z-]+=\S+|--[a-z-]+\s+\S+))*\s+commit(\s|$)'; then
+      return 0
+    fi
+  done < <(printf '%s\n' "$cmd" | awk '{gsub(/&&|;|\|\|/,"\n"); print}')
+
+  # Check user-configured aliases (e.g., git ci)
+  local config_file
+  config_file=$(metsuke_effective_config 2>/dev/null) || return 1
+  local aliases
+  aliases=$(jq -r '.commit_aliases // [] | .[]' "$config_file" 2>/dev/null) || return 1
+  [[ -z "$aliases" ]] && return 1
+
+  while IFS= read -r segment; do
+    segment="${segment#"${segment%%[![:space:]]*}"}"
+    [[ -z "$segment" ]] && continue
+    while IFS= read -r pat; do
+      [[ -z "$pat" ]] && continue
+      if printf '%s\n' "$segment" | grep -qE "$pat"; then
+        return 0
+      fi
+    done <<< "$aliases"
+  done < <(printf '%s\n' "$cmd" | awk '{gsub(/&&|;|\|\|/,"\n"); print}')
+
+  return 1
+}
+
 INPUT=$(cat)
 
 # No config = not initialized
 if ! metsuke_config_exists; then exit 0; fi
 
-# Early exit: only care about git commit
-if ! echo "$INPUT" | grep -q '"commit"'; then
+# Early exit: only care about commands containing "commit"
+if ! echo "$INPUT" | grep -q 'commit'; then
   exit 0
 fi
 
@@ -20,8 +54,8 @@ COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // ""')
 metsuke_log "workflow-guard: session=${SESSION_ID} command=${COMMAND}"
 metsuke_log "workflow-guard stdin: $(echo "$INPUT" | jq -c .)"
 
-# Only block actual git commit commands, not grep matches
-if ! echo "$COMMAND" | grep -qE '\bgit\b.*\bcommit\b'; then
+# Only block actual git commit commands, not grep/log matches
+if ! is_git_commit "$COMMAND"; then
   exit 0
 fi
 
