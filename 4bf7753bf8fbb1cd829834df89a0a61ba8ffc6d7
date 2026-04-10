@@ -1,0 +1,37 @@
+scripts/session-init.sh
+  e0b490d053f8906f 21,23
+  f39d38a83f5fd6ff 16-20,22,24,26-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "4bf7753bf8fbb1cd829834df89a0a61ba8ffc6d7",
+  "prompts": {
+    "e0b490d053f8906f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b6cbdd7-ccce-4f9e-b231-f75faa0b1cd3",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 166,
+      "overriden_lines": 0
+    },
+    "f39d38a83f5fd6ff": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "633d1290-c343-4211-8bfe-ce638275e36a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 9,
+      "total_deletions": 5,
+      "accepted_lines": 29,
+      "overriden_lines": 0
+    }
+  }
+}
