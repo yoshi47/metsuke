@@ -29,7 +29,7 @@ is_git_commit() {
     [[ -z "$segment" ]] && continue
     while IFS= read -r pat; do
       [[ -z "$pat" ]] && continue
-      if printf '%s\n' "$segment" | grep -qE "$pat"; then
+      if printf '%s\n' "$segment" | grep -qE "$pat" 2>/dev/null; then
         return 0
       fi
     done <<< "$aliases"
@@ -44,15 +44,22 @@ INPUT=$(cat)
 if ! metsuke_config_exists; then exit 0; fi
 
 # Early exit: only care about commands containing "commit"
-if ! echo "$INPUT" | grep -q 'commit'; then
+if ! printf '%s\n' "$INPUT" | grep -q 'commit'; then
   exit 0
 fi
 
-SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"')
-COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // ""')
+# Fail-closed: if stdin is not valid JSON, block rather than crash (set -e would kill the script)
+if ! SESSION_ID=$(printf '%s\n' "$INPUT" | jq -r '.session_id // "unknown"' 2>/dev/null); then
+  metsuke_log "ERROR: workflow-guard: failed to parse stdin"
+  cat <<'EOF'
+{"decision":"block","reason":"[metsuke] 入力の解析に失敗しました。\n\n回避: /metsuke:skip-review または METSUKE_SKIP=1"}
+EOF
+  exit 0
+fi
+COMMAND=$(printf '%s\n' "$INPUT" | jq -r '.tool_input.command // ""' 2>/dev/null) || COMMAND=""
 
 metsuke_log "workflow-guard: session=${SESSION_ID} command=${COMMAND}"
-metsuke_log "workflow-guard stdin: $(echo "$INPUT" | jq -c .)"
+metsuke_log "workflow-guard stdin: $(printf '%s\n' "$INPUT" | jq -c . 2>/dev/null)"
 
 # Only block actual git commit commands, not grep/log matches
 if ! is_git_commit "$COMMAND"; then
@@ -88,7 +95,11 @@ block_reasons=""
 
 while IFS= read -r check; do
   [[ -z "$check" ]] && continue
-  name=$(metsuke_check_field "$check" "name") || continue
+  name=$(metsuke_check_field "$check" "name") || {
+    metsuke_log "ERROR: workflow-guard: check has invalid name, blocking as safety measure"
+    block_reasons="${block_reasons:+${block_reasons}\n}[metsuke] 設定エラー: checks に不正なエントリがあります。config.json を確認してください。"
+    continue
+  }
 
   if ! metsuke_check "$SESSION_ID" "${name}-done"; then
     msg=$(metsuke_check_field "$check" "message") || continue
