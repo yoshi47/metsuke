@@ -1,0 +1,42 @@
+scripts/lib.sh
+  f39d38a83f5fd6ff 4
+  e0b490d053f8906f 24,39-78
+commands/skip-review.md
+  f39d38a83f5fd6ff 11-12
+commands/status.md
+  f39d38a83f5fd6ff 12,24,36,38
+  e0b490d053f8906f 3,10,14-23,25-35,37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "dd1f9c587f27f5c2dc1ab3b1ee9df9f3a736bee8",
+  "prompts": {
+    "e0b490d053f8906f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b6cbdd7-ccce-4f9e-b231-f75faa0b1cd3",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 264,
+      "total_deletions": 121,
+      "accepted_lines": 234,
+      "overriden_lines": 0
+    },
+    "f39d38a83f5fd6ff": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "633d1290-c343-4211-8bfe-ce638275e36a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 7,
+      "total_deletions": 7,
+      "accepted_lines": 7,
+      "overriden_lines": 0
+    }
+  }
+}
