@@ -5,6 +5,8 @@ METSUKE_DIR="${TMPDIR:-/tmp}/metsuke"
 METSUKE_LOG="${METSUKE_DIR}/debug.log"
 METSUKE_CONFIG_DIR="${HOME}/.config/metsuke"
 METSUKE_CONFIG="${METSUKE_CONFIG_DIR}/config.json"
+METSUKE_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+METSUKE_DEFAULT_CONFIG="${METSUKE_LIB_DIR}/../config/default.json"
 
 metsuke_marker_path() { echo "${METSUKE_DIR}/${1}.${2}"; }
 metsuke_mark()        { mkdir -p "$METSUKE_DIR"; touch "$(metsuke_marker_path "$1" "$2")"; }
@@ -18,23 +20,32 @@ metsuke_log() {
   echo "[$(date '+%H:%M:%S')] $*" >> "$METSUKE_LOG"
 }
 
-# Config helpers — fall back to defaults if config or key is missing
-metsuke_config_get() {
-  local key="$1"
-  local default="${2:-}"
+# Config helpers — user config takes precedence, then plugin default
+
+# Returns the path to the effective config file (user config > plugin default)
+metsuke_effective_config() {
   if [[ -f "$METSUKE_CONFIG" ]]; then
-    local val
-    val=$(jq -r "$key // empty" "$METSUKE_CONFIG" 2>/dev/null)
-    if [[ -n "$val" ]]; then
-      echo "$val"
-      return
-    fi
+    echo "$METSUKE_CONFIG"
+  elif [[ -f "$METSUKE_DEFAULT_CONFIG" ]]; then
+    echo "$METSUKE_DEFAULT_CONFIG"
+  else
+    return 1
   fi
-  echo "$default"
 }
 
 metsuke_config_exists() {
-  [[ -f "$METSUKE_CONFIG" ]]
+  metsuke_effective_config >/dev/null 2>&1
+}
+
+metsuke_config_get() {
+  local key="$1"
+  local default="${2:-}"
+  local config_file
+  config_file=$(metsuke_effective_config) || { echo "$default"; return; }
+  local val
+  val=$(jq -r "$key // empty" "$config_file" 2>/dev/null)
+  if [[ -n "$val" ]]; then echo "$val"; return; fi
+  echo "$default"
 }
 
 # Check helpers — generic checks array support
@@ -42,26 +53,26 @@ metsuke_config_exists() {
 # Returns 0 on success, 1 on jq/parse failure.
 # Callers should check the return code and fail-closed if needed.
 metsuke_all_checks() {
-  if [[ -f "$METSUKE_CONFIG" ]]; then
-    local output
-    if ! output=$(jq -c '.checks // [] | .[] | select(.enabled != false)' "$METSUKE_CONFIG" 2>&1); then
-      metsuke_log "ERROR: failed to parse config: $output"
-      return 1
-    fi
-    printf '%s\n' "$output"
+  local config_file
+  config_file=$(metsuke_effective_config) || return 0
+  local output
+  if ! output=$(jq -c '.checks // [] | .[] | select(.enabled != false)' "$config_file" 2>&1); then
+    metsuke_log "ERROR: failed to parse config: $output"
+    return 1
   fi
+  printf '%s\n' "$output"
 }
 
 metsuke_checks_by_trigger() {
   local trigger="$1"
-  if [[ -f "$METSUKE_CONFIG" ]]; then
-    local output
-    if ! output=$(jq -c --arg t "$trigger" '.checks // [] | .[] | select(.enabled != false and .trigger == $t)' "$METSUKE_CONFIG" 2>&1); then
-      metsuke_log "ERROR: failed to parse config: $output"
-      return 1
-    fi
-    printf '%s\n' "$output"
+  local config_file
+  config_file=$(metsuke_effective_config) || return 0
+  local output
+  if ! output=$(jq -c --arg t "$trigger" '.checks // [] | .[] | select(.enabled != false and .trigger == $t)' "$config_file" 2>&1); then
+    metsuke_log "ERROR: failed to parse config: $output"
+    return 1
   fi
+  printf '%s\n' "$output"
 }
 
 metsuke_check_field() {
