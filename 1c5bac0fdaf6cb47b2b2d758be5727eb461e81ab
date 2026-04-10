@@ -1,0 +1,37 @@
+scripts/workflow-tracker.sh
+  e0b490d053f8906f 35-43,45-54,57-58
+  f39d38a83f5fd6ff 18-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "1c5bac0fdaf6cb47b2b2d758be5727eb461e81ab",
+  "prompts": {
+    "e0b490d053f8906f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b6cbdd7-ccce-4f9e-b231-f75faa0b1cd3",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 98,
+      "overriden_lines": 0
+    },
+    "f39d38a83f5fd6ff": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "633d1290-c343-4211-8bfe-ce638275e36a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 9,
+      "total_deletions": 1,
+      "accepted_lines": 18,
+      "overriden_lines": 0
+    }
+  }
+}
