@@ -1,0 +1,38 @@
+scripts/workflow-guard.sh
+  f39d38a83f5fd6ff 7-40,46-47,57-58
+config/default.json
+  f39d38a83f5fd6ff 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "dceb8cbdc3786019e010ab1455969ba51cd59fb6",
+  "prompts": {
+    "e0b490d053f8906f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b6cbdd7-ccce-4f9e-b231-f75faa0b1cd3",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 98,
+      "overriden_lines": 0
+    },
+    "f39d38a83f5fd6ff": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "633d1290-c343-4211-8bfe-ce638275e36a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 39,
+      "total_deletions": 4,
+      "accepted_lines": 48,
+      "overriden_lines": 0
+    }
+  }
+}
