@@ -1,0 +1,36 @@
+README.md
+  f39d38a83f5fd6ff 16-17,50,52,54,60,64,68-86,90-98,109,112-115,122,133,137,139
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "bf6245cd4062f293a34f92fccbb2d89dba335a82",
+  "prompts": {
+    "e0b490d053f8906f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b6cbdd7-ccce-4f9e-b231-f75faa0b1cd3",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 31,
+      "overriden_lines": 0
+    },
+    "f39d38a83f5fd6ff": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "633d1290-c343-4211-8bfe-ce638275e36a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 46,
+      "total_deletions": 36,
+      "accepted_lines": 50,
+      "overriden_lines": 0
+    }
+  }
+}
