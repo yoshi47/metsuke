@@ -13,6 +13,8 @@ Blocks `git commit` if `pr-review-toolkit:review-pr` hasn't been run in the curr
 ```
 [metsuke] git commit blocked: レビュー未実施
 pr-review-toolkit:review-pr を実行してください。
+
+回避: /metsuke:skip-review または METSUKE_SKIP=1
 ```
 
 ### Soft enforcement: Plan review reminder
@@ -45,47 +47,55 @@ Or add to your `settings.json`:
 }
 ```
 
-### 2. Initialize config
+### 2. Done
+
+metsuke is now active. It blocks `git commit` without a review and reminds about plan reviews in plan mode using default settings.
+
+### 3. Customize (optional)
 
 ```
 /metsuke:init
 ```
 
-This creates `~/.config/metsuke/config.json` with default settings. **metsuke will not enforce anything until you run init.** Customize the config to match your workflow — messages, detection patterns, and which rules to enable are all configurable.
-
-### 3. Done
-
-metsuke is now active. It will block `git commit` without a review and remind you about plan reviews in plan mode.
+Creates `~/.config/metsuke/config.json` for customization. See [Configuration](#configuration) below.
 
 ## Configuration
 
-`~/.config/metsuke/config.json`:
+metsuke works with no configuration. To customize, run `/metsuke:init` to create `~/.config/metsuke/config.json`:
 
 ```json
 {
-  "impl_review": {
-    "enabled": true,
-    "block_commit": true,
-    "block_message": "[metsuke] git commit blocked: ...",
-    "detection_patterns": ["pr-review-toolkit"]
-  },
-  "plan_review": {
-    "enabled": true,
-    "reminder_message": "[metsuke] プラン作成後は ...",
-    "detection_patterns": ["plan-document-reviewer"]
-  }
+  "commit_aliases": [],
+  "checks": [
+    {
+      "name": "impl_review",
+      "enabled": true,
+      "trigger": "pre_commit",
+      "action": "block",
+      "detection_patterns": ["pr-review-toolkit"],
+      "message": "[metsuke] git commit blocked: レビュー未実施\npr-review-toolkit:review-pr を実行してください。"
+    },
+    {
+      "name": "plan_review",
+      "enabled": true,
+      "trigger": "plan_mode",
+      "action": "remind",
+      "detection_patterns": ["plan-document-reviewer"],
+      "message": "[metsuke] プラン作成後は plan-document-reviewer でレビューしてからユーザーに提示してください。"
+    }
+  ]
 }
 ```
 
-| Key | Description | Default |
-|-----|-------------|---------|
-| `impl_review.enabled` | Enable PR review enforcement | `true` |
-| `impl_review.block_commit` | Block git commit without review | `true` |
-| `impl_review.block_message` | Message shown when commit is blocked | (Japanese) |
-| `impl_review.detection_patterns` | Patterns to detect review completion in SubagentStop | `["pr-review-toolkit"]` |
-| `plan_review.enabled` | Enable plan review reminders | `true` |
-| `plan_review.reminder_message` | Reminder injected in plan mode | (Japanese) |
-| `plan_review.detection_patterns` | Patterns to detect plan review completion | `["plan-document-reviewer"]` |
+| Field | Description |
+|-------|-------------|
+| `commit_aliases` | Regex patterns for custom git commit aliases (e.g., `["\\bgit\\s+ci(\\s|$)"]`) |
+| `checks[].name` | Check identifier (used in marker filenames) |
+| `checks[].enabled` | Enable/disable without removing from array |
+| `checks[].trigger` | `pre_commit` (blocks at git commit) or `plan_mode` (reminds in plan mode) |
+| `checks[].action` | `block` (pre_commit only) or `remind` |
+| `checks[].detection_patterns` | Substring patterns matched against SubagentStop payload |
+| `checks[].message` | Message shown when check is unsatisfied |
 
 ## How it works
 
@@ -96,20 +106,20 @@ SubagentStop     → Detect review completion, create marker
 UserPromptSubmit → Inject plan review reminder in plan mode
 ```
 
-State is tracked via marker files in `/tmp/metsuke/`:
+State is tracked via marker files in `${TMPDIR}/metsuke/`:
 
 ```
-/tmp/metsuke/
-├── <session-id>.pr-review-done     # Created when PR review completes
-├── <session-id>.plan-review-done   # Created when plan review completes
-└── <session-id>.skip               # Created by /metsuke:skip-review
+${TMPDIR}/metsuke/
+├── <session-id>.impl_review-done    # Created when PR review completes
+├── <session-id>.plan_review-done    # Created when plan review completes
+└── <session-id>.skip                # Created by /metsuke:skip-review
 ```
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/metsuke:init` | Create or reset configuration (run this first!) |
+| `/metsuke:init` | Create or customize configuration |
 | `/metsuke:status` | Show current workflow compliance status |
 | `/metsuke:skip-review` | Bypass review enforcement for this session |
 
@@ -120,13 +130,13 @@ State is tracked via marker files in `/tmp/metsuke/`:
 
 ## Debug
 
-Logs are written to `/tmp/metsuke/debug.log`.
+Logs are written to `${TMPDIR}/metsuke/debug.log`.
 
 ## Known limitations
 
-- Git aliases (e.g., `git ci`) bypass the commit gate
+- Git aliases (e.g., `git ci`) bypass the commit gate by default. Add custom patterns to `commit_aliases` in config to catch them.
 - Plan review is soft enforcement only (no blocking mechanism for plan presentation)
-- SubagentStop payload format needs verification — the tracker checks multiple fields as a safeguard
+- SubagentStop payload format is not fully documented by Claude Code — the tracker checks multiple fields as a safeguard
 
 ## License
 
