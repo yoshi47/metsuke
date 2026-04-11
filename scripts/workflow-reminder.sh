@@ -19,15 +19,38 @@ if metsuke_is_skipped "$SESSION_ID"; then
   exit 0
 fi
 
-# Plan mode reminder
-if [[ "$PERMISSION_MODE" == "plan" ]]; then
-  if metsuke_config_enabled '.plan_review.enabled'; then
-    if ! metsuke_check "$SESSION_ID" "plan-review-done"; then
-      REMINDER=$(metsuke_config_get '.plan_review.reminder_message' \
-        "[metsuke] プラン作成後は plan-document-reviewer でレビューしてからユーザーに提示してください。")
-      echo "$REMINDER"
+# Collect checks matching current mode
+show_reminders() {
+  local trigger="$1"
+  local checks_output
+  checks_output=$(metsuke_checks_by_trigger "$trigger") || {
+    metsuke_log "ERROR: workflow-reminder: failed to read checks for trigger=${trigger}"
+    return
+  }
+
+  [[ -z "$checks_output" ]] && return
+
+  while IFS= read -r check; do
+    [[ -z "$check" ]] && continue
+    name=$(metsuke_check_field "$check" "name") || continue
+
+    if ! metsuke_check "$SESSION_ID" "${name}-done"; then
+      action=$(metsuke_check_field "$check" "action") || {
+        metsuke_log "WARNING: check '${name}' missing action field, defaulting to remind"
+        action="remind"
+      }
+      if [[ "$action" == "block" ]]; then
+        metsuke_log "WARNING: check '${name}' has action=block on trigger=${trigger}, falling back to remind"
+      fi
+      msg=$(metsuke_check_field "$check" "message") || continue
+      echo "$msg"
     fi
-  fi
+  done <<< "$checks_output"
+}
+
+# Plan mode reminders
+if [[ "$PERMISSION_MODE" == "plan" ]]; then
+  show_reminders "plan_mode"
 fi
 
 exit 0
