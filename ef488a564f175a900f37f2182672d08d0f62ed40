@@ -1,0 +1,47 @@
+skills/configure/SKILL.md
+  a8b080af2ff1b658 1-76
+scripts/session-init.sh
+  4ff87367ad662776 23
+skills/status/SKILL.md
+  a8b080af2ff1b658 1-39
+skills/skip-review/SKILL.md
+  a8b080af2ff1b658 1-8,10,12-14
+.claude-plugin/plugin.json
+  a8b080af2ff1b658 12-15
+README.md
+  4ff87367ad662776 57,64
+  a8b080af2ff1b658 118,120-122
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "ef488a564f175a900f37f2182672d08d0f62ed40",
+  "prompts": {
+    "4ff87367ad662776": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27d41768-2563-4405-87e0-5270de2e72d3",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 5,
+      "total_deletions": 5,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    },
+    "a8b080af2ff1b658": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f0d7223f-6fbc-4c11-ab12-ceb6125d6f1d",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "yoshi47",
+      "messages": [],
+      "total_additions": 145,
+      "total_deletions": 12,
+      "accepted_lines": 135,
+      "overriden_lines": 2
+    }
+  }
+}
