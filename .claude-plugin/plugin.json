@@ -9,9 +9,9 @@
   "homepage": "https://github.com/yoshi47/metsuke",
   "repository": "https://github.com/yoshi47/metsuke",
   "license": "MIT",
-  "commands": [
-    "./commands/init.md",
-    "./commands/status.md",
-    "./commands/skip-review.md"
+  "skills": [
+    "./skills/configure/SKILL.md",
+    "./skills/status/SKILL.md",
+    "./skills/skip-review/SKILL.md"
   ]
 }

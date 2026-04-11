@@ -1,5 +1,6 @@
 ---
-description: Show current metsuke workflow compliance status
+name: status
+description: Show current metsuke workflow compliance status for this session
 allowed-tools: Bash(*metsuke*), Bash(ls:*), Bash(cat:*), Bash(jq:*), Bash(test:*)
 ---
 

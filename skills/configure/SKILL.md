@@ -1,5 +1,6 @@
 ---
-description: Customize metsuke configuration
+name: configure
+description: Customize metsuke configuration — add/remove/modify workflow checks
 allowed-tools: Bash(mkdir:*), Bash(cp:*), Bash(cat:*), Read(*), Edit(*)
 ---
 

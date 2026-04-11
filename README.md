@@ -54,14 +54,14 @@ metsuke is now active. It blocks `git commit` without a review and reminds about
 ### 3. Customize (optional)
 
 ```
-/metsuke:init
+/metsuke:configure
 ```
 
 Creates `~/.config/metsuke/config.json` for customization. See [Configuration](#configuration) below.
 
 ## Configuration
 
-metsuke works with no configuration. To customize, run `/metsuke:init` to create `~/.config/metsuke/config.json`:
+metsuke works with no configuration. To customize, run `/metsuke:configure` to create `~/.config/metsuke/config.json`:
 
 ```json
 {
@@ -115,11 +115,11 @@ ${TMPDIR}/metsuke/
 └── <session-id>.skip                # Created by /metsuke:skip-review
 ```
 
-## Commands
+## Skills
 
-| Command | Description |
-|---------|-------------|
-| `/metsuke:init` | Create or customize configuration |
+| Skill | Description |
+|-------|-------------|
+| `/metsuke:configure` | Customize configuration |
 | `/metsuke:status` | Show current workflow compliance status |
 | `/metsuke:skip-review` | Bypass review enforcement for this session |
 

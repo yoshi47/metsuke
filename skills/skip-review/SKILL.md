@@ -1,5 +1,6 @@
 ---
-description: Skip review enforcement for this session
+name: skip-review
+description: Skip review enforcement for this session (for hotfixes or trivial changes)
 allowed-tools: Bash(mkdir:*), Bash(touch:*), Bash(cat:*)
 ---
 

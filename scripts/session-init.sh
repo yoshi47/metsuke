@@ -20,7 +20,7 @@ if [[ -z "$EFFECTIVE" ]]; then
 elif ! jq -e '.' "$EFFECTIVE" >/dev/null 2>&1; then
   echo "[metsuke] ERROR: config.json が不正な JSON です。構文を確認してください。"
 elif ! jq -e '.checks' "$EFFECTIVE" >/dev/null 2>&1; then
-  echo "[metsuke] 設定ファイルが旧形式です。/metsuke:init を実行して新形式に移行してください。"
+  echo "[metsuke] 設定ファイルが旧形式です。/metsuke:configure を実行して新形式に移行してください。"
 elif [[ "$EFFECTIVE" == "$METSUKE_CONFIG" ]]; then
   echo "[metsuke] Workflow tracking initialized."
 else
