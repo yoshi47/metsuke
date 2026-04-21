@@ -1,0 +1,21 @@
+{
+  "name": "metsuke-plugin",
+  "owner": {
+    "name": "yoshi47",
+    "url": "https://github.com/yoshi47"
+  },
+  "description": "Workflow compliance enforcer for Claude Code",
+  "plugins": [
+    {
+      "name": "metsuke",
+      "source": "./",
+      "version": "0.1.0",
+      "description": "Workflow compliance enforcer — ensures plan reviews and PR reviews are completed before proceeding",
+      "author": {
+        "name": "yoshi47",
+        "url": "https://github.com/yoshi47"
+      },
+      "homepage": "https://github.com/yoshi47/metsuke"
+    }
+  ]
+}
