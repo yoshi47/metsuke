@@ -9,7 +9,7 @@
     {
       "name": "metsuke",
       "source": "./",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "description": "Workflow compliance enforcer — ensures plan reviews and PR reviews are completed before proceeding",
       "author": {
         "name": "yoshi47",
